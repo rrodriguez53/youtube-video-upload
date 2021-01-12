@@ -64,12 +64,12 @@ def request_oauth2_credentials():
 	    access_type='offline',
 	    # Enable incremental authorization. Recommended as a best practice.
 	    include_granted_scopes='true',
-		# Prompting the user for consent is the only way to get a refresh token as part of the credentials
-		prompt='consent')
+		)
 
 	# Your application redirects the user to Google along with the list of requested permissions.
 	# The user decides whether to grant the permissions to your application.
 	print(authorization_url)
+	# To-DO: This step should be handled by a web server automatically and should not require user input when in production
 	authorization_response = input("Go to the above url, allow permissions and then when you get redirected to a new page, paste the url here")
 
 	# After the web server receives the authorization code, it can begin the exchange the authorization code for an access token.
@@ -83,9 +83,6 @@ def request_oauth2_credentials():
 	flow.fetch_token(authorization_response=authorization_response)
 	credentials = flow.credentials
 
-	# TO-DO: We need a persistance layer to save the credentials permanently to minimize the need to go through the
-	# Oauth2 process. Once we get our initial credentials we can rely on the refresh tokens from here on out.
-	print("credentials are: {}".format(credentials.to_json()))
 	return credentials
 
 
@@ -169,7 +166,6 @@ def upload_video(youtube):
 #       sleep_seconds = random.random() * max_sleep
 #       print "Sleeping %f seconds and then retrying..." % sleep_seconds
 #       time.sleep(sleep_seconds)
-
 
 
 def main():
